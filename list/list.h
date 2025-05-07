@@ -6,19 +6,46 @@ struct box
 };
 
 template <typename T>
+class ListIterator
+{
+    public:
+    ListIterator();
+    ListIterator& operator++();
+    T& operator*();
+    bool operator!=(const ListIterator<T>&);
+
+    private:
+    box<T> *current;
+};
+
+template <typename T>
 class List
 {
     public:
+
+    using value_type = T;
+    using iterator = ListIterator<T>;
+
     List();
-    bool empty();
-    unsigned count();
+    List(const List& other);
+    bool empty() const;
+    unsigned count() const;
     void push(T);
     void insertAfter(T x, unsigned i);
 
     T& operator[](unsigned i);
+    T operator[](unsigned i) const;
+    void operator=(const List& other);
+
+    ~List();
+    void clear();
+
+    ListIterator<T> begin();
+    ListIterator<T> end();
 
     private:
     box<T> *first = nullptr;
 
-    box<T>* pointerTo(unsigned i);
+    box<T>* pointerTo(unsigned i) const;
+    void copyfrom(box<T>*);
 };
