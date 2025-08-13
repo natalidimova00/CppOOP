@@ -37,7 +37,7 @@ public:
     {
         double det = A * other.B - other.A * B;
         if (fabs(det) < EPS){
-            throw ("Правите са успоредни");
+            throw ("The lines are parallel");
         }
         double x = (B * other.C - other.B * C) / det;
         double y = (other.A * C - A * other.C) / det;
@@ -73,12 +73,19 @@ public:
         return l;
     }
 
-    void print() const
+    friend std::ostream& operator<< (std::ostream& os, const Line& l)
     {
-        std::cout << A << "x + " << B << "y + " << C << " = 0" << std::endl;
+        os << l.A << "x + " << l.B << "y + " << l.C << " = 0";
+        return os;
     }
 };
 
 int main(){
-   
+    Point p1(0,0), p2(1, 1), p3(0, 1), p4(1, 2);
+    Line l1(p1, p2), l2(p3, p4);
+
+    std::cout <<  "Are the lines " << l1 <<  " and " << l2 << " parallel? " << (l1 == l2 ? "Yes" : "No") << std::endl;
+
+    Point t(2, 2);
+    std::cout << "Is the point ("<< t.x << "," << t.y << ") on the line " << l1 << "? " << (l1.contains(t) ? "Yes" : "No") << std::endl;
 }
